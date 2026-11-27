@@ -47,4 +47,50 @@ public class ProductosController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Edit(int id)
+    {
+        var producto = await _context.Productos.FindAsync(id);
+
+        if (producto == null)
+        {
+            return NotFound();
+        }
+
+        return View(producto);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        int id,
+        [Bind("Id,Nombre,Descripcion,Precio,Cantidad")] Producto producto)
+    {
+        if (id != producto.Id)
+        {
+            return BadRequest();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(producto);
+        }
+
+        var productoExistente = await _context.Productos.FindAsync(id);
+
+        if (productoExistente == null)
+        {
+            return NotFound();
+        }
+
+        productoExistente.Nombre = producto.Nombre;
+        productoExistente.Descripcion = producto.Descripcion;
+        productoExistente.Precio = producto.Precio;
+        productoExistente.Cantidad = producto.Cantidad;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
 }
