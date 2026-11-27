@@ -480,3 +480,10 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+
+# Base de datos local SQLite
+inventario.db
+inventario.db-shm
+inventario.db-wal
+inventario.db-journal
