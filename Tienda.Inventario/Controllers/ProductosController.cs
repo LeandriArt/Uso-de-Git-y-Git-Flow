@@ -93,4 +93,36 @@ public class ProductosController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var producto = await _context.Productos
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (producto == null)
+        {
+            return NotFound();
+        }
+
+        return View(producto);
+    }
+
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var producto = await _context.Productos.FindAsync(id);
+
+        if (producto == null)
+        {
+            return NotFound();
+        }
+
+        _context.Productos.Remove(producto);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
 }
