@@ -5,7 +5,11 @@
 }
 
 <h1>Inventario de productos</h1>
-
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Crear producto
+    </a>
+</p>
 @if (!Model.Any())
 {
     <div class="alert alert-info">
