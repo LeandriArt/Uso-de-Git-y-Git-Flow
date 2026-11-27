@@ -1,9 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Tienda.Inventario.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDbContext<InventarioContext>(options =>
+    options.UseSqlite("Data Source=inventario.db"));
+
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider
+        .GetRequiredService<InventarioContext>();
+
+    context.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
